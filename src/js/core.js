@@ -121,13 +121,23 @@ var _isOpen,
 	// Micro bind/trigger
 	_listeners = {},
 	_listen = function(name, fn) {
-		if(!_listeners[name]) {
-			_listeners[name] = [];
+		try {
+			if(!_listeners[name]) {
+				_listeners[name] = [];
+			}
+			return _listeners[name].push(fn);
+		} catch (error) {
+				
 		}
-		return _listeners[name].push(fn);
 	},
 	_shout = function(name) {
-		var listeners = _listeners[name];
+		var listeners;
+		try {
+			listeners = _listeners[name];
+		} catch (error) {
+			
+		}
+		 
 
 		if(listeners) {
 			var args = Array.prototype.slice.call(arguments);

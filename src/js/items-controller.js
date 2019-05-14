@@ -235,7 +235,13 @@ var _getItemAt,
 					});
 				}
 			}
-		};		
+		};
+
+		_listen('close', function(){
+			timeout.forEach(function(time){
+				clearTimeout(time);
+			});
+		});
 
 		img.src = item.src;// + '?a=' + Math.random();
 
@@ -258,7 +264,7 @@ var _getItemAt,
 			return;
 		}
 
-		if(!img) {
+		if(!img && item.container) {
 			img = item.container.lastChild;
 		}
 
