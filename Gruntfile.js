@@ -139,7 +139,7 @@ module.exports = function(grunt) {
       },
       options: {
         preserveComments: /^!/i,
-        sourceMap: true
+        sourceMap: false
       }
     },
 

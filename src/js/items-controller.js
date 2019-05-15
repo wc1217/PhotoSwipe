@@ -226,7 +226,7 @@ var _getItemAt,
 					item.error_num = 0;
 					imgOnError();
 				}else{
-					$.post({url: '/common/getSnsRawImage', global: false}, {imgId: arg[2], devId: arg[1], id: options.snsId}, function(){
+					$.post({url: options.url, global: false}, {imgId: arg[2], devId: arg[1], id: options.snsId}, function(){
 						//console.log('post', item, {imgId: arg[2], devId: arg[1], id: options.snsId});
 						imgOnError();
 					}).fail(function(){
