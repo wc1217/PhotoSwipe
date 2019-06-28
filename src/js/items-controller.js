@@ -176,36 +176,34 @@ var _getItemAt,
 				timeout.push(setTimeout(function(){
 					img.src = item.src + '?_=' + (new Date).getTime();
 				}, 1000));
+			}else if(item.ori_src){
+				//imgOnLoad(item.ori_src);
+				
+				item.needsUpdate = true;
+				item.src = item.ori_src;
+				img.src = item.ori_src;
+				
+				delete item.ori_src;
+				
+				setTimeout(function(){
+					self.updateSize(true);
+				}, 1234);
+				
 			}else{
-				if(item.ori_src){
-					//imgOnLoad(item.ori_src);
-					
-					item.needsUpdate = true;
-					item.src = item.ori_src;
-					img.src = item.ori_src;
-					
-					delete item.ori_src;
-					
-					setTimeout(function(){
-						self.updateSize(true);
-					}, 1234);
-					
-				}else{
-					//imgpreload = null;
-					//gallery.options.errorMsg
-					item.html = options.onerrMsg(item.src);
-					delete item.src;
-					delete item.img;
-					delete item.imageAppended;
-					item.needsUpdate = true;
+				//imgpreload = null;
+				//gallery.options.errorMsg
+				item.html = options.onerrMsg(item.src);
+				delete item.src;
+				delete item.img;
+				delete item.imageAppended;
+				item.needsUpdate = true;
 
-					//gallery.invalidateCurrItems();
-					//gallery.updateSize(true);
-					
-					//item.loadError = true;
-					onComplete();
-					//console.log('imgOnError',item);
-				}
+				//gallery.invalidateCurrItems();
+				//gallery.updateSize(true);
+				
+				//item.loadError = true;
+				onComplete();
+				//console.log('imgOnError',item);
 			}
 		},
 		timeout = [];
@@ -218,11 +216,10 @@ var _getItemAt,
 				imgOnError();
 			}else{
 				item.ajaxed = true;
-				let cb = function(ret){
+				options.onerror && options.onerror(item.src, function(ret){
 					!ret && (item.error_num = 0);
 					imgOnError();
-				};
-				options.onerror && options.onerror(item.src, cb);
+				});
 			}
 		};
 

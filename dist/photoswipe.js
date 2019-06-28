@@ -1,4 +1,4 @@
-/*! PhotoSwipe - v4.1.3 - 2019-05-15
+/*! PhotoSwipe - v4.1.3 - 2019-06-28
 * http://photoswipe.com
 * Copyright (c) 2019 Dmitry Semenov; */
 (function (root, factory) { 
@@ -2894,10 +2894,7 @@ var _getItemAt,
 				}else{
 					//imgpreload = null;
 					//gallery.options.errorMsg
-					item.html = '<div class="pswp__error-msg">' +
-							'<a href="' + item.src + '" target="_blank">这张图片</a>无法加载,请稍候重试 <img src="data:image/gif;base64,iVBORw0KGgoAAAAN' +
-							'SUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAA' +
-							'AABJRU5ErkJggg==" alt="[捂脸]" class="icon_emotion_single icon_emoji_wx_5"></div>';
+					item.html = options.onerrMsg(item.src);
 					delete item.src;
 					delete item.img;
 					delete item.imageAppended;
@@ -2922,19 +2919,10 @@ var _getItemAt,
 				imgOnError();
 			}else{
 				item.ajaxed = true;
-				var arg = item.src.match(/\/upload_sns\/(\d+)\/[\w\d]+\/(\d+)/);
-				if(!arg || arg.length !== 3){
-					item.error_num = 0;
+				options.onerror && options.onerror(item.src, function(ret){
+					!ret && (item.error_num = 0);
 					imgOnError();
-				}else{
-					$.post({url: options.url, global: false}, {imgId: arg[2], devId: arg[1], id: options.snsId}, function(){
-						//console.log('post', item, {imgId: arg[2], devId: arg[1], id: options.snsId});
-						imgOnError();
-					}).fail(function(){
-						item.error_num = 0;
-						imgOnError();
-					});
-				}
+				});
 			}
 		};
 
